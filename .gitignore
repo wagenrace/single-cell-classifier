@@ -50,3 +50,4 @@ coverage.xml
 2.process-data/data/test_eigen_values.tsv.gz
 2.process-data/data/train_eigen_values.tsv.gz
 2.process-data/models/PCA_model.joblib
+4.deep_learning/0.process-data/data/
