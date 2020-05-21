@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from .load_data import load_all_data
 
@@ -9,7 +9,8 @@ current_loc = Path(__file__).parents[1]
 train_data_loc = os.path.join(current_loc, "0.process-data", "data", "train")
 
 
-def create_dataGenerator(pre_load_data=False):
+def create_dataGenerator(pre_load_data: bool=False, isTraining: bool = True, validationFac: float = 0.1):
+    subset = "training" if isTraining else "validation"
     parameters1 = {
         "featurewise_center": False,
         "samplewise_center": False,
@@ -31,8 +32,7 @@ def create_dataGenerator(pre_load_data=False):
         "rescale": 1.0 / 255,
         "preprocessing_function": None,
         "data_format": "channels_last",
-        "validation_split": 0.15,
-        "interpolation_order": 1,
+        "validation_split": validationFac,
         "dtype": "float32",
     }
     
@@ -48,7 +48,7 @@ def create_dataGenerator(pre_load_data=False):
             "save_to_dir": None,
             "save_prefix": "",
             "save_format": "png",
-            "subset": None,
+            "subset": subset,
         }
         return data_generator.flow(x, y, **parameters2)
     else:
@@ -64,7 +64,7 @@ def create_dataGenerator(pre_load_data=False):
             "save_prefix": "",
             "save_format": "png",
             "follow_links": False,
-            "subset": None,
+            "subset": subset,
             "interpolation": "nearest",
         }   
         return data_generator.flow_from_directory(
